@@ -122,7 +122,7 @@ FROM employee E INNER JOIN department D
 ON E.department_code = D.department_code
 WHERE E.department_code = 'A';
 
--- 부서명이 '영업부'인 사원에 대해 사번, 사원 이름, 사원 나이를 조회하시오.
+-- 부서명이 '영업부'인 사원에 대해 사번, 사원 이름, 사원 나이를 조회하시오. (조인으로)
 SELECT 
 	E.employee_number '사번',
     E.name '사원 이름',
@@ -131,10 +131,59 @@ FROM employee E RIGHT JOIN department D
 ON E.department_code = D.department_code
 WHERE D.name = '영업부';
 
+-- 서브쿼리 : 쿼리 내부에 존재하는 또 다른 쿼리, 쿼리 결과를 조건이나 테이블로 사용할 수 있도록 함
 
+-- WHERE 절에서 서브쿼리 : 조회 결과를 조건으로 사용하여 조건을 동적으로 지정할 수 있도록 함
+-- WHERE 절에서 비교 연산등으로 사용할 때 서브쿼리의 결과 컬럼 수 및 레코드 수 주의
+-- 부서명이 '영업부'인 사원에 대해 사번, 사원 이름, 사원 나이를 조회하시오. (서브쿼리로)
+SELECT employee_number, name, age
+FROM employee
+WHERE department_code = (
+	SELECT department_code
+    FROM department
+    WHERE name = '영업부' -- UNIQUE 제약이 걸려있어야 100% 성공
+);
 
+-- WHERE 조건절에서 서브쿼리를 사용할땐 일반적으로 해당 서브쿼리의 켤과 컬럼은 1개가 와야함
+-- Error Code: 1241, Operand should contain 1column(s).
+SELECT employee_number, name, age
+FROM employee
+WHERE department_code = (
+	SELECT *
+    FROM department
+    WHERE name = '영업부'
+);
 
+-- WHERE 조건절에서 서브쿼리를 사용할땐 연산자에 따라 레코드의 개수를 잘 확인해야함
+-- Error Code: 1242, Subquery returns more than 1 row.
+SELECT employee_number, name, age
+FROM employee
+WHERE department_code = (
+	SELECT department_code
+    FROM department
+);
 
+-- IN() 연산자는 레코드를 여러개 가질 수 있기 때문에 가능
+SELECT employee_number, name, age
+FROM employee
+WHERE department_code IN (
+	SELECT department_code
+    FROM department
+);
 
+-- 메인의 조건절이 하나이기 때문에 서브쿼리의 결과도 하나만 와야해서 불가능
+SELECT employee_number, name, age
+FROM employee
+WHERE department_code IN (
+	SELECT *
+    FROM department
+);
 
+-- FROM 절에서 서브쿼리 : 조회 결과 테이블을 다시 FROM 절에서 재사용
+SELECT *
+FROM employee E INNER JOIN (
+	SELECT * FROM department WHERE name = '영업부'
+) D
+ON E.department_code = D.department_code;
 
+-- 서브쿼리를 FROM 절에서 사용할땐 3개 이상의 테이블을 조인해서 결과를 얻고자 할때 아주 유용하게 사용됨

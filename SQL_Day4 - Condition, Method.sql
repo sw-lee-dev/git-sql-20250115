@@ -38,7 +38,7 @@ SELECT CONCAT('안녕','하세요','!');
 SELECT LENGTH('안녕하세요!');
 SELECT LENGTH('Hello!');
 
--- SUBSTRING(문자열데이터, 시작위치, 개수) : 문자열의 특정 부분을 반환
+-- SUBSTRING(문자열데이터, 시작위치, 개수) : 문자열의 특정 부분을 반환, 시작은 1번부터(0번 X)
 -- ex) SUBSTRING('안녕하세요!', 2, 3) >> 결과 : 녕하세
 
 -- TRIM(문자열) : 문자열의 앞뒤 공백을 제거

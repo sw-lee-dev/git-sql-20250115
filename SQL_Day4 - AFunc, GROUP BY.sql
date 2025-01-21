@@ -45,7 +45,7 @@ SELECT SUM(amount) FROM sale WHERE employee_number = 1;
 SELECT AVG(amount) FROM sale;
 SELECT AVG(amount) FROM sale WHERE employee_number = 1;
 
--- MIN(), MAX() : 특정 조건에 해당하는 컬럼값의 최소, 최대값을 반환
+-- MIN(), MAX() : 특정 조건에 해당하는 컬럼값의 최소, 최대값을 반환 >> 컬럼값 지정 필수!
 SELECT MIN(amount), MAX(amount) FROM sale;
 SELECT MIN(amount), MAX(amount) FROM sale WHERE employee_number = 1;
 
@@ -77,5 +77,3 @@ FROM sale
 GROUP BY employee_number
 HAVING date = '2025-01-20'
 ;
-
-

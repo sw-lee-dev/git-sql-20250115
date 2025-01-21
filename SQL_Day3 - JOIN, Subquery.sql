@@ -179,7 +179,7 @@ WHERE department_code IN (
     FROM department
 );
 
--- FROM 절에서 서브쿼리 : 조회 결과 테이블을 다시 FROM 절에서 재사용
+-- FROM 절에서 서브쿼리 : 조회 결과 테이블을 다시 FROM 절에서 재사용, Alias 필수
 SELECT *
 FROM employee E INNER JOIN (
 	SELECT * FROM department WHERE name = '영업부'

@@ -2,8 +2,6 @@ CREATE DATABASE crud;
 
 USE crud;
 
-DROP TABLE board;
-
 CREATE TABLE user (
 	id VARCHAR(20) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -65,6 +63,8 @@ CREATE TABLE good_thumb (
     CONSTRAINT thumb_board_fk FOREIGN KEY (board_number) REFERENCES board (board_number)
 );
 
+SELECT * FROM good_thumb;
+
 INSERT INTO comment (contents, board_number, writer_id, write_datetime, status, parent_comment)
 VALUES ('QWER', 1, 'qwer1234', now(), true, null);
 INSERT INTO comment (contents, board_number, writer_id, write_datetime, status, parent_comment)
@@ -89,10 +89,10 @@ INSERT INTO good_thumb VALUES ('qwer1234', 1);
 DELETE FROM good_thumb WHERE thumb_id = 'qwer1111' AND board_number = 2;
 
 -- 댓글 수 보기
-SELECT board_number, COUNT(*) FROM comment WHERE board_number = 1 GROUP BY board_number;
+SELECT board_number, COUNT(*) FROM comment WHERE board_number = 2 GROUP BY board_number;
 
 -- 좋아요 수 보기
-SELECT board_number, COUNT(*) FROM good_thumb WHERE board_number = 1 GROUP BY board_number;
+SELECT board_number, COUNT(*) FROM good_thumb WHERE board_number = 2 GROUP BY board_number;
 
 -- 댓글과 좋아요 수 같이 보기
 SELECT
@@ -101,7 +101,7 @@ SELECT
     IFNULL(G.count, 0) 'good_thumb_count'
 FROM (
 	SELECT board_number, COUNT(*) count
-    FROM comment WHERE board_number = 1 
+    FROM comment WHERE board_number = 2 
     GROUP BY board_number
 ) C 
 LEFT JOIN (
@@ -110,3 +110,6 @@ LEFT JOIN (
     GROUP BY board_number
 ) G
 ON C.board_number = G.board_number;
+
+DELETE FROM comment;
+DELETE FROM good_thumb;
